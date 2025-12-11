@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="BOTTOM_CENTER"
+      prefHeight="520"
+      prefWidth="320"
+      spacing="15"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mycalculator.CalculatorController"
+      styleClass="root">
+
+    <children>
+
+        <!-- Display Area -->
+        <VBox alignment="BOTTOM_RIGHT" prefHeight="200">
+            <children>
+                <Label fx:id="historyLabel" styleClass="history-label" text="" />
+                <Label fx:id="resultLabel" styleClass="result-label" text="0" />
+            </children>
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20" />
+            </padding>
+        </VBox>
+
+        <!-- Buttons Grid -->
+        <GridPane hgap="10" vgap="10">
+
+            <columnConstraints>
+                <ColumnConstraints prefWidth="70" />
+                <ColumnConstraints prefWidth="70" />
+                <ColumnConstraints prefWidth="70" />
+                <ColumnConstraints prefWidth="70" />
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints prefHeight="70" />
+                <RowConstraints prefHeight="70" />
+                <RowConstraints prefHeight="70" />
+                <RowConstraints prefHeight="70" />
+                <RowConstraints prefHeight="70" />
+            </rowConstraints>
+
+            <children>
+
+                <!-- Row 1 -->
+                <Button text="AC" id ="acButton" styleClass="function-button"  onAction="#handleOperatorClick" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Button text="±"  styleClass="function-button"  onAction="#handleOperatorClick" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Button text="%%" onAction="#handleOperatorClick" styleClass="function-button"
+                        GridPane.rowIndex="0" GridPane.columnIndex="2">
+
+                </Button>
+
+                <Button text="÷"  styleClass="operator-button" onAction="#handleOperatorClick" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                <!-- Row 2 -->
+                <Button text="7" styleClass="number-button"  onAction="#handleNumberClick" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Button text="8" styleClass="number-button"  onAction="#handleNumberClick" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Button text="9" styleClass="number-button"  onAction="#handleNumberClick" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                <Button text="×" styleClass="operator-button" onAction="#handleOperatorClick" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+                <!-- Row 3 -->
+                <Button text="4" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Button text="5" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Button text="6" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                <Button text="-" styleClass="operator-button" onAction="#handleOperatorClick" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+                <!-- Row 4 -->
+                <Button text="1" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Button text="2" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Button text="3" styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+                <Button text="+" styleClass="operator-button" onAction="#handleOperatorClick" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+
+                <!-- Row 5 -->
+                <Button onAction="#handleNumberClick"
+                         text="0"
+                         styleClass="zero-button"
+                         GridPane.rowIndex="4"
+                         GridPane.columnIndex="0"
+                         GridPane.columnSpan="2" />
+
+
+
+                <Button text="." styleClass="number-button" onAction="#handleNumberClick" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+                <Button text="=" styleClass="equals-button" onAction="#handleEqualsClick" GridPane.rowIndex="4" GridPane.columnIndex="3"/>
+
+            </children>
+
+            <padding>
+                <Insets top="0" right="20" bottom="20" left="20"/>
+            </padding>
+
+        </GridPane>
+
+    </children>
+</VBox>

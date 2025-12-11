@@ -1,0 +1,138 @@
+
+.root {
+    -fx-background-color: #000000;
+    -fx-padding: 0;
+    -fx-font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui;
+}
+
+
+VBox > VBox {
+    -fx-background-color: transparent;
+    -fx-alignment: bottom-right;
+    -fx-spacing: 5;
+    -fx-pref-height: 200px;
+}
+
+.history-label {
+    -fx-text-fill: #A5A5A5;
+    -fx-font-size: 20pt;
+    -fx-font-weight: 300;
+    -fx-padding: 0 20 0 0;
+}
+
+.result-label {
+    -fx-text-fill: white;
+    -fx-font-size: 64pt;
+    -fx-font-weight: 300;
+    -fx-padding: 0 15 20 0;
+    -fx-alignment: center-right;
+}
+
+
+.button {
+    /* круги 70x70 */
+    -fx-min-width: 70px;
+    -fx-pref-width: 70px;
+    -fx-max-width: Infinity;
+
+    -fx-min-height: 70px;
+    -fx-pref-height: 70px;
+    -fx-max-height: 70px;
+
+    -fx-background-radius: 35px;
+
+    -fx-font-size: 24pt;
+    -fx-font-weight: 400;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-effect: null;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-opacity: 0.85;
+}
+
+.button:pressed {
+    -fx-opacity: 0.65;
+}
+
+
+.function-button {
+    -fx-background-color: #A5A5A5;
+    -fx-text-fill: #000000;
+    -fx-font-size: 22pt; /* чуть меньше, чтобы AC точно влезло */
+}
+
+.function-button:hover {
+    -fx-background-color: #D4D4D4;
+}
+
+
+.operator-button {
+    -fx-background-color: #FF9500;
+    -fx-text-fill: white;
+}
+
+.operator-button:hover {
+    -fx-background-color: #FFB143;
+}
+
+.operator-button:pressed {
+    -fx-background-color: #FFD18F;
+}
+
+
+.equals-button {
+    -fx-background-color: #FF9500;
+    -fx-text-fill: white;
+}
+
+.equals-button:hover {
+    -fx-background-color: #FFB143;
+}
+
+.equals-button:pressed {
+    -fx-background-color: #FFD18F;
+}
+
+
+.number-button {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+}
+
+.number-button:hover {
+    -fx-background-color: #5A5A5A;
+}
+
+.number-button:pressed {
+    -fx-background-color: #808080;
+}
+
+
+.zero-button {
+    -fx-text-fill: white;
+    -fx-min-width: 150px;
+    -fx-pref-width: 150px;
+    -fx-max-width: 150px;
+    -fx-background-color: #333333;
+    -fx-background-radius: 35px;
+    -fx-alignment: center-left;
+    -fx-alignment: center;
+}
+
+#acButton {
+    -fx-font-size: 22;
+}
+
+GridPane {
+    -fx-background-color: transparent;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-padding: 10 15 20 15;
+}
+
+.error {
+    -fx-text-fill: #FF3B30 !important;
+}
