@@ -73,13 +73,14 @@ src/
 4. Запустить `CalculatorApp.java`.
 
 ### **2. Запуск через JAR-файл**
-
+```bash
 java --module-path ./javafx/lib \
      --add-modules javafx.controls,javafx.fxml,javafx.media \
      -jar calculator.jar
-
+```
 ### **3. Запуск через Maven**
 Если используется плагин javafx-maven-plugin:
 
 ```bash
 mvn clean javafx:run
+```
