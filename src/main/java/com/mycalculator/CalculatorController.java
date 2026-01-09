@@ -3,6 +3,10 @@ package com.mycalculator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.media.*;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -13,7 +17,12 @@ public class CalculatorController {
     @FXML private Label resultLabel;
     @FXML private Label historyLabel;
 
+    private MediaPlayer videoPlayer;
+    private Stage videoStage;
+    private boolean videoPlayed = false;
+
     private AudioClip german;
+
     private String currentInput = "0";
     private String previousValue = "";
     private String currentOperator = "";
@@ -31,9 +40,47 @@ public class CalculatorController {
     @FXML
     public void initialize() {
         updateDisplay();
-        german = new AudioClip(getClass().getResource("/sounds/german-song.mp3").toString());
+        german = new AudioClip(
+                getClass().getResource("/sounds/german-song.mp3").toString()
+        );
     }
 
+    // 🎬 Видео в отдельном окне без рамок
+    private void openVideoWindow(String path) {
+        Media media = new Media(getClass().getResource(path).toExternalForm());
+        videoPlayer = new MediaPlayer(media);
+
+        MediaView mediaView = new MediaView(videoPlayer);
+        mediaView.setPreserveRatio(true);
+
+        StackPane root = new StackPane(mediaView);
+        Scene scene = new Scene(root);
+
+        videoStage = new Stage();
+        videoStage.initStyle(javafx.stage.StageStyle.UNDECORATED);
+        videoStage.setScene(scene);
+
+        videoPlayer.setOnReady(() -> {
+            double w = media.getWidth();
+            double h = media.getHeight();
+
+            mediaView.setFitWidth(w);
+            mediaView.setFitHeight(h);
+
+            videoStage.setWidth(w);
+            videoStage.setHeight(h);
+            videoStage.centerOnScreen();
+
+            videoStage.show();
+            videoPlayer.play();
+        });
+
+        videoPlayer.setOnEndOfMedia(() -> {
+            videoPlayer.stop();
+            videoStage.close();
+            videoPlayed = false;
+        });
+    }
 
     private void updateDisplay() {
         if (errorState) return;
@@ -48,10 +95,16 @@ public class CalculatorController {
 
         try {
             double val = Double.parseDouble(currentInput.replace(",", "."));
+
+            if (Math.abs(val - 67) < 0.0001 && !videoPlayed) {
+                videoPlayed = true;
+                openVideoWindow("/videos/67.mp4");
             }
+
             if (Math.abs(val - 1889) < 0.0001) {
                 german.play();
             }
+
         } catch (Exception ignored) {}
     }
 
@@ -59,7 +112,9 @@ public class CalculatorController {
         try {
             numStr = numStr.replace(',', '.');
             double val = Double.parseDouble(numStr);
+            return decimalFormat.format(val);
         } catch (Exception e) {
+            return "0";
         }
     }
 
@@ -70,15 +125,20 @@ public class CalculatorController {
         String digit = ((javafx.scene.control.Button) event.getSource()).getText();
 
         if (startNewInput) {
+            currentInput = digit.equals(".") ? "0." : digit;
             startNewInput = false;
         } else {
+            if (digit.equals(".") && currentInput.contains(".")) return;
             currentInput += digit;
         }
+
         updateDisplay();
     }
 
     @FXML
     private void handleOperatorClick(ActionEvent event) {
+        if (errorState) return;
+
         String op = ((javafx.scene.control.Button) event.getSource()).getText();
 
         switch (op) {
@@ -93,13 +153,20 @@ public class CalculatorController {
                 return;
         }
 
+        if (!previousValue.isEmpty() && !currentOperator.isEmpty() && !startNewInput) {
+            if (!calculate()) return;
+        }
+
         previousValue = currentInput;
         currentOperator = op;
         startNewInput = true;
+        updateDisplay();
     }
 
     @FXML
     private void handleEqualsClick() {
+        if (errorState || currentOperator.isEmpty() || previousValue.isEmpty()) return;
+
         if (!calculate()) return;
 
         previousValue = "";
@@ -110,11 +177,28 @@ public class CalculatorController {
 
     private boolean calculate() {
         try {
+            double a = Double.parseDouble(previousValue);
+            double b = Double.parseDouble(currentInput);
+            double r;
 
             switch (currentOperator) {
+                case "+": r = a + b; break;
+                case "-": r = a - b; break;
+                case "×": r = a * b; break;
+                case "÷":
+                    if (Math.abs(b) < 1e-12) {
+                        showError("Не дели на ноль");
+                        return false;
+                    }
+                    r = a / b;
+                    break;
+                default:
+                    return false;
             }
 
+            currentInput = decimalFormat.format(r);
             return true;
+
         } catch (Exception e) {
             showError("Ошибка");
             return false;
@@ -127,12 +211,22 @@ public class CalculatorController {
         currentOperator = "";
         startNewInput = true;
         errorState = false;
+
+        if (videoStage != null && videoStage.isShowing()) {
+            videoStage.close();
+        }
+        if (videoPlayer != null) {
+            videoPlayer.stop();
+        }
+
+        videoPlayed = false;
         updateDisplay();
     }
 
     private void toggleSign() {
         if (currentInput.startsWith("-")) {
             currentInput = currentInput.substring(1);
+        } else if (!currentInput.equals("0")) {
             currentInput = "-" + currentInput;
         }
         updateDisplay();
@@ -140,10 +234,15 @@ public class CalculatorController {
 
     private void calculatePercentage() {
         try {
+            double val = Double.parseDouble(currentInput);
+            currentInput = decimalFormat.format(val / 100);
             updateDisplay();
+        } catch (Exception ignored) {}
     }
 
+    private void showError(String msg) {
         errorState = true;
+        resultLabel.setText(msg);
         historyLabel.setText("");
     }
 }
