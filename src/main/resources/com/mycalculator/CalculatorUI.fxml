@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+
 
 <VBox alignment="BOTTOM_CENTER"
       prefHeight="520"
@@ -17,7 +19,6 @@
       styleClass="root">
 
     <children>
-
         <!-- Display Area -->
         <VBox alignment="BOTTOM_RIGHT" prefHeight="200">
             <children>

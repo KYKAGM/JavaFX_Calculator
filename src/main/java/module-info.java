@@ -6,6 +6,7 @@ module com.example.calc { // Используйте имя вашего моду
     requires javafx.graphics;
     requires javafx.media;
 
+
     // ОТКРЫТИЕ (Opens) - необходимо для FXML-контроллера
     opens com.mycalculator to javafx.fxml;
 
