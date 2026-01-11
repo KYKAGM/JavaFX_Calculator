@@ -45,7 +45,6 @@ public class CalculatorController {
         );
     }
 
-    // 🎬 Видео в отдельном окне без рамок
     private void openVideoWindow(String path) {
         Media media = new Media(getClass().getResource(path).toExternalForm());
         videoPlayer = new MediaPlayer(media);
@@ -54,23 +53,23 @@ public class CalculatorController {
         mediaView.setPreserveRatio(true);
 
         StackPane root = new StackPane(mediaView);
+        root.setStyle("-fx-background-color: black;");
+
         Scene scene = new Scene(root);
 
         videoStage = new Stage();
         videoStage.initStyle(javafx.stage.StageStyle.UNDECORATED);
         videoStage.setScene(scene);
 
+        mediaView.fitWidthProperty().bind(scene.widthProperty());
+        mediaView.fitHeightProperty().bind(scene.heightProperty());
+
         videoPlayer.setOnReady(() -> {
-            double w = media.getWidth();
-            double h = media.getHeight();
-
-            mediaView.setFitWidth(w);
-            mediaView.setFitHeight(h);
-
-            videoStage.setWidth(w);
-            videoStage.setHeight(h);
-            videoStage.centerOnScreen();
-
+            videoStage.setFullScreenExitHint("");
+            videoStage.setFullScreenExitKeyCombination(
+                    javafx.scene.input.KeyCombination.NO_MATCH
+            );
+            videoStage.setFullScreen(true);
             videoStage.show();
             videoPlayer.play();
         });
@@ -81,6 +80,8 @@ public class CalculatorController {
             videoPlayed = false;
         });
     }
+
+
 
     private void updateDisplay() {
         if (errorState) return;
